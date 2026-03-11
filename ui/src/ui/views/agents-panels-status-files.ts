@@ -20,32 +20,32 @@ import { resolveChannelExtras as resolveChannelExtrasFromConfig } from "./channe
 function renderAgentContextCard(context: AgentContext, subtitle: string) {
   return html`
     <section class="card">
-      <div class="card-title">Agent Context</div>
+      <div class="card-title">智能体上下文</div>
       <div class="card-sub">${subtitle}</div>
       <div class="agents-overview-grid" style="margin-top: 16px;">
         <div class="agent-kv">
-          <div class="label">Workspace</div>
+          <div class="label">工作空间</div>
           <div class="mono">${context.workspace}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Primary Model</div>
+          <div class="label">主要模型</div>
           <div class="mono">${context.model}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Identity Name</div>
+          <div class="label">身份名称</div>
           <div>${context.identityName}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Identity Emoji</div>
+          <div class="label">身份表情符号</div>
           <div>${context.identityEmoji}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Skills Filter</div>
+          <div class="label">技能筛选器</div>
           <div>${context.skillsLabel}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Default</div>
-          <div>${context.isDefault ? "yes" : "no"}</div>
+          <div class="label">默认</div>
+          <div>${context.isDefault ? "是" : "否"}</div>
         </div>
       </div>
     </section>
@@ -148,15 +148,15 @@ export function renderAgentChannels(params: {
       <section class="card">
         <div class="row" style="justify-content: space-between;">
           <div>
-            <div class="card-title">Channels</div>
-            <div class="card-sub">Gateway-wide channel status snapshot.</div>
+            <div class="card-title">通道</div>
+            <div class="card-sub">网关-wide通道状态快照。</div>
           </div>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
-            ${params.loading ? "Refreshing…" : "Refresh"}
+            ${params.loading ? "刷新中…" : "刷新"}
           </button>
         </div>
         <div class="muted" style="margin-top: 8px;">
-          Last refresh: ${lastSuccessLabel}
+          最后刷新: ${lastSuccessLabel}
         </div>
         ${
           params.error
@@ -166,26 +166,24 @@ export function renderAgentChannels(params: {
         ${
           !params.snapshot
             ? html`
-                <div class="callout info" style="margin-top: 12px">Load channels to see live status.</div>
+                <div class="callout info" style="margin-top: 12px">加载通道以查看实时状态。</div>
               `
             : nothing
         }
         ${
           entries.length === 0
             ? html`
-                <div class="muted" style="margin-top: 16px">No channels found.</div>
+                <div class="muted" style="margin-top: 16px">未找到通道。</div>
               `
             : html`
                 <div class="list" style="margin-top: 16px;">
                   ${entries.map((entry) => {
                     const summary = summarizeChannelAccounts(entry.accounts);
                     const status = summary.total
-                      ? `${summary.connected}/${summary.total} connected`
-                      : "no accounts";
-                    const config = summary.configured
-                      ? `${summary.configured} configured`
-                      : "not configured";
-                    const enabled = summary.total ? `${summary.enabled} enabled` : "disabled";
+                      ? `${summary.connected}/${summary.total} 已连接`
+                      : "无账号";
+                    const config = summary.configured ? `${summary.configured} 已配置` : "未配置";
+                    const enabled = summary.total ? `${summary.enabled} 已启用` : "已禁用";
                     const extras = resolveChannelExtrasFromConfig({
                       configForm: params.configForm,
                       channelId: entry.id,
@@ -236,26 +234,26 @@ export function renderAgentCron(params: {
       <section class="card">
         <div class="row" style="justify-content: space-between;">
           <div>
-            <div class="card-title">Scheduler</div>
-            <div class="card-sub">Gateway cron status.</div>
+            <div class="card-title">调度器</div>
+            <div class="card-sub">网关 cron 状态。</div>
           </div>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
-            ${params.loading ? "Refreshing…" : "Refresh"}
+            ${params.loading ? "刷新中…" : "刷新"}
           </button>
         </div>
         <div class="stat-grid" style="margin-top: 16px;">
           <div class="stat">
-            <div class="stat-label">Enabled</div>
+            <div class="stat-label">已启用</div>
             <div class="stat-value">
-              ${params.status ? (params.status.enabled ? "Yes" : "No") : "n/a"}
+              ${params.status ? (params.status.enabled ? "是" : "否") : "n/a"}
             </div>
           </div>
           <div class="stat">
-            <div class="stat-label">Jobs</div>
+            <div class="stat-label">作业数</div>
             <div class="stat-value">${params.status?.jobs ?? "n/a"}</div>
           </div>
           <div class="stat">
-            <div class="stat-label">Next wake</div>
+            <div class="stat-label">下次唤醒时间</div>
             <div class="stat-value">${formatNextRun(params.status?.nextWakeAtMs ?? null)}</div>
           </div>
         </div>
@@ -267,12 +265,12 @@ export function renderAgentCron(params: {
       </section>
     </section>
     <section class="card">
-      <div class="card-title">Agent Cron Jobs</div>
-      <div class="card-sub">Scheduled jobs targeting this agent.</div>
+      <div class="card-title">智能体 Cron 作业</div>
+      <div class="card-sub">目标此智能体的计划作业。</div>
       ${
         jobs.length === 0
           ? html`
-              <div class="muted" style="margin-top: 16px">No jobs assigned.</div>
+              <div class="muted" style="margin-top: 16px">未分配作业。</div>
             `
           : html`
               <div class="list" style="margin-top: 16px;">
@@ -335,15 +333,15 @@ export function renderAgentFiles(params: {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Core Files</div>
-          <div class="card-sub">Bootstrap persona, identity, and tool guidance.</div>
+          <div class="card-title">核心文件</div>
+          <div class="card-sub">引导人物、身份和工具指导。</div>
         </div>
         <button
           class="btn btn--sm"
           ?disabled=${params.agentFilesLoading}
           @click=${() => params.onLoadFiles(params.agentId)}
         >
-          ${params.agentFilesLoading ? "Loading…" : "Refresh"}
+          ${params.agentFilesLoading ? "加载中…" : "刷新"}
         </button>
       </div>
       ${
@@ -359,9 +357,7 @@ export function renderAgentFiles(params: {
       ${
         !list
           ? html`
-              <div class="callout info" style="margin-top: 12px">
-                Load the agent workspace files to edit core instructions.
-              </div>
+              <div class="callout info" style="margin-top: 12px">加载智能体工作区文件以编辑核心指令。</div>
             `
           : html`
               <div class="agent-files-grid" style="margin-top: 16px;">
@@ -369,7 +365,7 @@ export function renderAgentFiles(params: {
                   ${
                     files.length === 0
                       ? html`
-                          <div class="muted">No files found.</div>
+                          <div class="muted">未找到文件。</div>
                         `
                       : files.map((file) =>
                           renderAgentFileRow(file, active, () => params.onSelectFile(file.name)),

@@ -134,20 +134,20 @@ export function renderAgentTools(params: {
         </div>
         <div class="row" style="gap: 8px;">
           <button class="btn btn--sm" ?disabled=${!editable} @click=${() => updateAll(true)}>
-            Enable All
+            启用所有
           </button>
           <button class="btn btn--sm" ?disabled=${!editable} @click=${() => updateAll(false)}>
-            Disable All
+            禁用所有
           </button>
           <button class="btn btn--sm" ?disabled=${params.configLoading} @click=${params.onConfigReload}>
-            Reload Config
+            重新加载配置
           </button>
           <button
             class="btn btn--sm primary"
             ?disabled=${params.configSaving || !params.configDirty}
             @click=${params.onConfigSave}
           >
-            ${params.configSaving ? "Saving…" : "Save"}
+            ${params.configSaving ? "保存中..." : "保存"}
           </button>
         </div>
       </div>
@@ -183,7 +183,7 @@ export function renderAgentTools(params: {
         hasGlobalAllow
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                Global tools.allow is set. Agent overrides cannot enable tools that are globally blocked.
+                全局 tools.allow 已设置。智能体覆盖无法启用全局阻止的工具。
               </div>
             `
           : nothing
@@ -191,7 +191,7 @@ export function renderAgentTools(params: {
 
       <div class="agent-tools-meta" style="margin-top: 16px;">
         <div class="agent-kv">
-          <div class="label">Profile</div>
+          <div class="label">配置文件</div>
           <div class="mono">${profile}</div>
         </div>
         <div class="agent-kv">
@@ -202,8 +202,8 @@ export function renderAgentTools(params: {
           params.configDirty
             ? html`
                 <div class="agent-kv">
-                  <div class="label">Status</div>
-                  <div class="mono">unsaved</div>
+                  <div class="label">状态</div>
+                  <div class="mono">未保存</div>
                 </div>
               `
             : nothing
@@ -211,7 +211,7 @@ export function renderAgentTools(params: {
       </div>
 
       <div class="agent-tools-presets" style="margin-top: 16px;">
-        <div class="label">Quick Presets</div>
+        <div class="label">快速预设</div> 
         <div class="agent-tools-buttons">
           ${profileOptions.map(
             (option) => html`
@@ -229,7 +229,7 @@ export function renderAgentTools(params: {
             ?disabled=${!editable}
             @click=${() => params.onProfileChange(params.agentId, null, false)}
           >
-            Inherit
+            继承
           </button>
         </div>
       </div>

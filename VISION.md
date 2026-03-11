@@ -1,110 +1,110 @@
-## OpenClaw Vision
+## OpenClaw 愿景
 
-OpenClaw is the AI that actually does things.
-It runs on your devices, in your channels, with your rules.
+OpenClaw 是真正能“办实事”的 AI。
+它运行在您的设备上，在您的渠道中，遵循您的规则。
 
-This document explains the current state and direction of the project.
-We are still early, so iteration is fast.
-Project overview and developer docs: [`README.md`](README.md)
-Contribution guide: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+本文档说明了项目的当前状态和发展方向。
+我们仍处于早期发展阶段，因此迭代速度非常快。
+项目概览和开发者文档：[`README.md`](README.md)
+贡献指南：[`CONTRIBUTING.md`](CONTRIBUTING.md)
 
-OpenClaw started as a personal playground to learn AI and build something genuinely useful:
-an assistant that can run real tasks on a real computer.
-It evolved through several names and shells: Warelay -> Clawdbot -> Moltbot -> OpenClaw.
+OpenClaw 最初是作为一个个人试验场，用于学习 AI 并构建一些真正有用的东西：
+一个可以在真实计算机上执行真实任务的助手。
+它的名字和形态经历了多次演变：Warelay -> Clawdbot -> Moltbot -> OpenClaw。
 
-The goal: a personal assistant that is easy to use, supports a wide range of platforms, and respects privacy and security.
+目标：一个易于使用、支持广泛平台，并尊重隐私与安全的个人助手。
 
-The current focus is:
+当前重点：
 
-Priority:
+优先级：
 
-- Security and safe defaults
-- Bug fixes and stability
-- Setup reliability and first-run UX
+- 安全性与安全的默认设置
+- Bug 修复与稳定性
+- 设置的可靠性与首次运行体验 (UX)
 
-Next priorities:
+后续优先级：
 
-- Supporting all major model providers
-- Improving support for major messaging channels (and adding a few high-demand ones)
-- Performance and test infrastructure
-- Better computer-use and agent harness capabilities
-- Ergonomics across CLI and web frontend
-- Companion apps on macOS, iOS, Android, Windows, and Linux
+- 支持所有主要的模型供应商
+- 改进对主要消息渠道的支持（并增加一些高需求的渠道）
+- 性能与测试基础设施
+- 增强计算机操作及智能体治理 (agent harness) 能力
+- CLI 与 Web 前端的易用性优化
+- 在 macOS、iOS、Android、Windows 和 Linux 上的伴随应用
 
-Contribution rules:
+贡献规则：
 
-- One PR = one issue/topic. Do not bundle multiple unrelated fixes/features.
-- PRs over ~5,000 changed lines are reviewed only in exceptional circumstances.
-- Do not open large batches of tiny PRs at once; each PR has review cost.
-- For very small related fixes, grouping into one focused PR is encouraged.
+- 一个 PR = 一个 issue/主题。不要捆绑多个无关的修复/功能。
+- 超过约 5,000 行更改的 PR 仅在特殊情况下才会进行审查。
+- 请勿一次性开启大量的小型 PR；每个 PR 都有审查成本。
+- 对于非常细小的相关修复，鼓励合并为一个聚焦的 PR。
 
-## Security
+## 安全性
 
-Security in OpenClaw is a deliberate tradeoff: strong defaults without killing capability.
-The goal is to stay powerful for real work while making risky paths explicit and operator-controlled.
+OpenClaw 的安全性是一种深思熟虑的权衡：强大的默认设置，但不以牺牲功能为代价。
+我们的目标是保持强大的实际工作能力，同时使风险路径显式化并受操作员控制。
 
-Canonical security policy and reporting:
+规范的安全政策与报告流程：
 
 - [`SECURITY.md`](SECURITY.md)
 
-We prioritize secure defaults, but also expose clear knobs for trusted high-power workflows.
+我们优先考虑安全的默认设置，但也为受信任的高性能工作流提供清晰的控制开关。
 
-## Plugins & Memory
+## 插件与内存
 
-OpenClaw has an extensive plugin API.
-Core stays lean; optional capability should usually ship as plugins.
+OpenClaw 拥有广泛的插件 API。
+核心部分保持精简；可选功能通常应作为插件发布。
 
-Preferred plugin path is npm package distribution plus local extension loading for development.
-If you build a plugin, host and maintain it in your own repository.
-The bar for adding optional plugins to core is intentionally high.
-Plugin docs: [`docs/tools/plugin.md`](docs/tools/plugin.md)
-Community plugin listing + PR bar: https://docs.openclaw.ai/plugins/community
+首选的插件路径是 npm 包分发，加上用于开发的本地扩展加载。
+如果您构建了一个插件，请在自己的仓库中托管并维护它。
+将可选插件添加到核心部分的门槛有意设得很高。
+插件文档：[`docs/tools/plugin.md`](docs/tools/plugin.md)
+社区插件列表 + PR 标准：https://docs.openclaw.ai/plugins/community
 
-Memory is a special plugin slot where only one memory plugin can be active at a time.
-Today we ship multiple memory options; over time we plan to converge on one recommended default path.
+内存是一个特殊的插件槽位，同一时间只能有一个内存插件处于活动状态。
+目前我们提供了多个内存选项；随着时间的推移，我们计划收敛到一条推荐的默认路径。
 
-### Skills
+### 技能 (Skills)
 
-We still ship some bundled skills for baseline UX.
-New skills should be published to ClawHub first (`clawhub.ai`), not added to core by default.
-Core skill additions should be rare and require a strong product or security reason.
+我们仍然内置了一些用于基础体验的技能。
+新技能应首先发布到 ClawHub (`clawhub.ai`)，默认情况下不添加到核心。
+向核心添加技能的情况应该是罕见的，且需要强大的产品或安全理由。
 
-### MCP Support
+### MCP 支持
 
-OpenClaw supports MCP through `mcporter`: https://github.com/steipete/mcporter
+OpenClaw 通过 `mcporter` 支持 MCP: https://github.com/steipete/mcporter
 
-This keeps MCP integration flexible and decoupled from core runtime:
+这使得 MCP 集成保持灵活并与核心运行时解耦：
 
-- add or change MCP servers without restarting the gateway
-- keep core tool/context surface lean
-- reduce MCP churn impact on core stability and security
+- 无需重启网关即可添加或更改 MCP 服务器
+- 保持核心工具/上下文界面的精简
+- 减少 MCP 的频繁变动对核心稳定性及安全性的影响
 
-For now, we prefer this bridge model over building first-class MCP runtime into core.
-If there is an MCP server or feature `mcporter` does not support yet, please open an issue there.
+目前，我们倾向于采用这种桥接模式，而非在核心中构建一流的 MCP 运行时。
+如果存在 `mcporter` 尚不支持的 MCP 服务器或功能，请在该仓库中提交 issue。
 
-### Setup
+### 设置
 
-OpenClaw is currently terminal-first by design.
-This keeps setup explicit: users see docs, auth, permissions, and security posture up front.
+OpenClaw 目前在设计上是终端优先的。
+这保证了设置过程的透明度：用户可以预先看到文档、认证、权限和安全态势。
 
-Long term, we want easier onboarding flows as hardening matures.
-We do not want convenience wrappers that hide critical security decisions from users.
+长远来看，随着加固技术的成熟，我们希望提供更简单的入职流程。
+但我们不希望使用会向用户隐藏关键安全决策的便利包装。
 
-### Why TypeScript?
+### 为什么选择 TypeScript?
 
-OpenClaw is primarily an orchestration system: prompts, tools, protocols, and integrations.
-TypeScript was chosen to keep OpenClaw hackable by default.
-It is widely known, fast to iterate in, and easy to read, modify, and extend.
+OpenClaw 主要是一个编排系统：包括提示词、工具、协议和集成。
+选择 TypeScript 是为了保持 OpenClaw 默认的“黑客性”（易于折腾）。
+它广为人知，迭代速度快，且易于阅读、修改和扩展。
 
-## What We Will Not Merge (For Now)
+## 我们暂时不会合并的内容 (目前)
 
-- New core skills when they can live on ClawHub
-- Full-doc translation sets for all docs (deferred; we plan AI-generated translations later)
-- Commercial service integrations that do not clearly fit the model-provider category
-- Wrapper channels around already supported channels without a clear capability or security gap
-- First-class MCP runtime in core when `mcporter` already provides the integration path
-- Agent-hierarchy frameworks (manager-of-managers / nested planner trees) as a default architecture
-- Heavy orchestration layers that duplicate existing agent and tool infrastructure
+- 当新核心技能可以存在于 ClawHub 上时
+- 针对所有文档的完整文档翻译集（暂缓；我们计划稍后使用 AI 生成的翻译）
+- 不明确符合模型供应商类别的商业服务集成
+- 在现有支持渠道基础上的包装渠道，且没有明确的功能或安全改进
+- 当 `mcporter` 已提供集成路径时，在核心中内置一级 MCP 运行时
+- 作为默认架构的智能体层级框架（管理者之管理者 / 嵌套计划树）
+- 与现有智能体和工具基础设施重复的重型编排层
 
-This list is a roadmap guardrail, not a law of physics.
-Strong user demand and strong technical rationale can change it.
+这份列表是路线图的护栏，而非物理定律。
+强大的用户需求和强大的技术理由可以改变它。

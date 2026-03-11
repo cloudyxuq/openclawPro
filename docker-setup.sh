@@ -16,9 +16,10 @@ fail() {
   exit 1
 }
 
+# 检查依赖
 require_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then
-    echo "Missing dependency: $1" >&2
+    echo "❌ 缺少依赖: $1" >&2
     exit 1
   fi
 }
@@ -170,7 +171,7 @@ validate_mount_spec() {
 
 require_cmd docker
 if ! docker compose version >/dev/null 2>&1; then
-  echo "Docker Compose not available (try: docker compose version)" >&2
+  echo "Docker Compose 不可用（请尝试: docker compose version）" >&2
   exit 1
 fi
 
@@ -258,6 +259,7 @@ export OPENCLAW_GATEWAY_TOKEN
 COMPOSE_FILES=("$COMPOSE_FILE")
 COMPOSE_ARGS=()
 
+# 生成额外的 compose 配置文件（用于挂载和卷）
 write_extra_compose() {
   local home_volume="$1"
   shift
@@ -354,6 +356,7 @@ for compose_file in "${COMPOSE_FILES[@]}"; do
   COMPOSE_HINT+=" -f ${compose_file}"
 done
 
+# 更新 .env 文件（兼容 bash 和 zsh，不使用关联数组）
 ENV_FILE="$ROOT_DIR/.env"
 upsert_env() {
   local file="$1"
