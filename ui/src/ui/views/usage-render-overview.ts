@@ -141,8 +141,8 @@ function renderDailyChartCompact(
   if (!daily.length) {
     return html`
       <div class="daily-chart-compact">
-        <div class="sessions-panel-title">Daily Usage</div>
-        <div class="muted" style="padding: 20px; text-align: center">No data</div>
+        <div class="sessions-panel-title">会话时间分布</div>
+        <div class="muted" style="padding: 20px; text-align: center">暂无时间线数据。</div>
       </div>
     `;
   }
@@ -448,21 +448,21 @@ function renderUsageInsights(
 
   return html`
     <section class="card" style="margin-top: 16px;">
-      <div class="card-title">Usage Overview</div>
+      <div class="card-title">使用概览</div>
       <div class="usage-summary-grid">
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Messages
+            消息
             <span class="usage-summary-hint" title="Total user + assistant messages in range.">?</span>
           </div>
           <div class="usage-summary-value">${aggregates.messages.total}</div>
           <div class="usage-summary-sub">
-            ${aggregates.messages.user} user · ${aggregates.messages.assistant} assistant
+            ${aggregates.messages.user} 用户 · ${aggregates.messages.assistant} 助手
           </div>
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Tool Calls
+            工具调用
             <span class="usage-summary-hint" title="Total tool call count across sessions.">?</span>
           </div>
           <div class="usage-summary-value">${aggregates.tools.totalCalls}</div>
@@ -470,15 +470,15 @@ function renderUsageInsights(
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Errors
+            错误
             <span class="usage-summary-hint" title="Total message/tool errors in range.">?</span>
           </div>
           <div class="usage-summary-value">${aggregates.messages.errors}</div>
-          <div class="usage-summary-sub">${aggregates.messages.toolResults} tool results</div>
+          <div class="usage-summary-sub">${aggregates.messages.toolResults} 工具结果</div>
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Avg Tokens / Msg
+            每条消息平均token数
             <span class="usage-summary-hint" title=${tokensHint}>?</span>
           </div>
           <div class="usage-summary-value">${formatTokens(avgTokens)}</div>
@@ -486,7 +486,7 @@ function renderUsageInsights(
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Avg Cost / Msg
+            每条消息平均成本
             <span class="usage-summary-hint" title=${costHint}>?</span>
           </div>
           <div class="usage-summary-value">${formatCost(avgCost, 4)}</div>
@@ -494,7 +494,7 @@ function renderUsageInsights(
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Sessions
+            会话数
             <span class="usage-summary-hint" title="Distinct sessions in the range.">?</span>
           </div>
           <div class="usage-summary-value">${sessionCount}</div>
@@ -502,7 +502,7 @@ function renderUsageInsights(
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Throughput
+            吞吐量
             <span class="usage-summary-hint" title=${throughputHint}>?</span>
           </div>
           <div class="usage-summary-value">${throughputLabel}</div>
@@ -510,7 +510,7 @@ function renderUsageInsights(
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Error Rate
+            错误率
             <span class="usage-summary-hint" title=${errorHint}>?</span>
           </div>
           <div class="usage-summary-value ${errorRatePct > 5 ? "bad" : errorRatePct > 1 ? "warn" : "good"}">${errorRatePct.toFixed(2)}%</div>
@@ -520,7 +520,7 @@ function renderUsageInsights(
         </div>
         <div class="usage-summary-card">
           <div class="usage-summary-title">
-            Cache Hit Rate
+            缓存命中率
             <span class="usage-summary-hint" title=${cacheHint}>?</span>
           </div>
           <div class="usage-summary-value ${cacheHitRate > 0.6 ? "good" : cacheHitRate > 0.3 ? "warn" : "bad"}">${cacheHitLabel}</div>
@@ -530,13 +530,13 @@ function renderUsageInsights(
         </div>
       </div>
       <div class="usage-insights-grid">
-        ${renderInsightList("Top Models", topModels, "No model data")}
-        ${renderInsightList("Top Providers", topProviders, "No provider data")}
-        ${renderInsightList("Top Tools", topTools, "No tool calls")}
-        ${renderInsightList("Top Agents", topAgents, "No agent data")}
-        ${renderInsightList("Top Channels", topChannels, "No channel data")}
-        ${renderPeakErrorList("Peak Error Days", errorDays, "No error data")}
-        ${renderPeakErrorList("Peak Error Hours", errorHours, "No error data")}
+        ${renderInsightList("Top模型", topModels, "无模型数据")}
+        ${renderInsightList("Top供应商", topProviders, "无供应商数据")}
+        ${renderInsightList("Top工具", topTools, "无工具调用")}
+        ${renderInsightList("Top智能体", topAgents, "无智能体数据")}
+        ${renderInsightList("Top渠道", topChannels, "无渠道数据")}
+        ${renderPeakErrorList("Top高峰日", errorDays, "无错误数据")}
+        ${renderPeakErrorList("Top高峰小时", errorHours, "无错误数据")}
       </div>
     </section>
   `;
@@ -707,13 +707,13 @@ function renderSessionsCard(
             class="toggle-btn ${sessionsTab === "all" ? "active" : ""}"
             @click=${() => onSessionsTabChange("all")}
           >
-            All
+            所有会话
           </button>
           <button
             class="toggle-btn ${sessionsTab === "recent" ? "active" : ""}"
             @click=${() => onSessionsTabChange("recent")}
           >
-            Recently viewed
+            最近浏览
           </button>
         </div>
         <label class="sessions-sort">
@@ -731,7 +731,7 @@ function renderSessionsCard(
         <button
           class="btn btn-sm sessions-action-btn icon"
           @click=${() => onSessionSortDirChange(sessionSortDir === "desc" ? "asc" : "desc")}
-          title=${sessionSortDir === "desc" ? "Descending" : "Ascending"}
+          title=${sessionSortDir === "desc" ? "按降序排序" : "按升序排序"}
         >
           ${sessionSortDir === "desc" ? "↓" : "↑"}
         </button>
@@ -739,7 +739,7 @@ function renderSessionsCard(
           selectedCount > 0
             ? html`
                 <button class="btn btn-sm sessions-action-btn sessions-clear-btn" @click=${onClearSessions}>
-                  Clear Selection
+                  清除选择
                 </button>
               `
             : nothing
@@ -749,7 +749,7 @@ function renderSessionsCard(
         sessionsTab === "recent"
           ? recentEntries.length === 0
             ? html`
-                <div class="muted" style="padding: 20px; text-align: center">No recent sessions</div>
+                <div class="muted" style="padding: 20px; text-align: center">暂无最近会话。</div>
               `
             : html`
 	                <div class="session-bars" style="max-height: 220px; margin-top: 6px;">
@@ -758,7 +758,7 @@ function renderSessionsCard(
 	              `
           : sessions.length === 0
             ? html`
-                <div class="muted" style="padding: 20px; text-align: center">No sessions in range</div>
+                <div class="muted" style="padding: 20px; text-align: center">暂无会话数据。</div>
               `
             : html`
 	                <div class="session-bars">

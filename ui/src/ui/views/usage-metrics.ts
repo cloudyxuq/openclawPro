@@ -177,12 +177,12 @@ function renderUsageMosaic(
       <div class="card usage-mosaic">
         <div class="usage-mosaic-header">
           <div>
-            <div class="usage-mosaic-title">Activity by Time</div>
-            <div class="usage-mosaic-sub">Estimates require session timestamps.</div>
+            <div class="usage-mosaic-title">会话时间分布</div>
+            <div class="usage-mosaic-sub">根据会话的开始和结束时间估计。</div>
           </div>
           <div class="usage-mosaic-total">${formatTokens(0)} tokens</div>
         </div>
-        <div class="muted" style="padding: 12px; text-align: center;">No timeline data yet.</div>
+        <div class="muted" style="padding: 12px; text-align: center;">暂无时间线数据。</div>
       </div>
     `;
   }

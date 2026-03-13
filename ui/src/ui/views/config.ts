@@ -281,20 +281,46 @@ const sidebarIcons = {
   `,
 };
 
-// Section definitions
+// Section definitions，
 const SECTIONS: Array<{ key: string; label: string }> = [
-  { key: "env", label: "Environment" },
-  { key: "update", label: "Updates" },
-  { key: "agents", label: "Agents" },
-  { key: "auth", label: "Authentication" },
-  { key: "channels", label: "Channels" },
-  { key: "messages", label: "Messages" },
-  { key: "commands", label: "Commands" },
-  { key: "hooks", label: "Hooks" },
-  { key: "skills", label: "Skills" },
-  { key: "tools", label: "Tools" },
-  { key: "gateway", label: "Gateway" },
-  { key: "wizard", label: "Setup Wizard" },
+  { key: "env", label: "环境" },
+  { key: "update", label: "更新" },
+  { key: "agents", label: "智能体" },
+  { key: "auth", label: "身份验证" },
+  { key: "channels", label: "频道" },
+  { key: "messages", label: "消息" },
+  { key: "commands", label: "命令" },
+  { key: "hooks", label: "钩子" },
+  { key: "skills", label: "技能" },
+  { key: "tools", label: "工具" },
+  { key: "gateway", label: "网关" },
+  { key: "wizard", label: "设置向导" },
+  //为了从网关中获取动态schema，这里提取到ui层来中文化
+  { key: "meta", label: "元数据" },
+  { key: "diagnostics", label: "诊断" },
+  { key: "logging", label: "日志" },
+  { key: "cli", label: "命令行" },
+  { key: "browser", label: "浏览器" },
+  { key: "ui", label: "界面" },
+  { key: "secrets", label: "密钥" },
+  { key: "acp", label: "ACP 协议" },
+  { key: "models", label: "模型" },
+  { key: "nodeHost", label: "节点主机" },
+  { key: "bindings", label: "绑定" },
+  { key: "broadcast", label: "广播" },
+  { key: "audio", label: "音频" },
+  { key: "media", label: "媒体" },
+  { key: "approvals", label: "审批" },
+  { key: "session", label: "会话" },
+  { key: "cron", label: "定时任务" },
+  { key: "web", label: "Web 连接" },
+  { key: "discovery", label: "发现" },
+  { key: "canvasHost", label: "画布主机" },
+  { key: "talk", label: "语音" },
+  { key: "memory", label: "记忆" },
+  { key: "plugins", label: "插件" },
+
+  { key: "installs", label: "安装记录" },
 ];
 
 type SubsectionEntry = {
@@ -403,7 +429,9 @@ function truncateValue(value: unknown, maxLen = 40): string {
 }
 
 export function renderConfig(props: ConfigProps) {
-  const validity = props.valid == null ? "unknown" : props.valid ? "valid" : "invalid";
+  // 确定配置有效性状态：未知、有效或无效
+  const validity = props.valid == null ? "未知" : props.valid ? "有效" : "无效";
+  // 分析配置 schema，获取结构化信息与不支持的路径
   const analysis = analyzeConfigSchema(props.schema);
   const formUnsafe = analysis.schema ? analysis.unsupportedPaths.length > 0 : false;
 
@@ -469,10 +497,10 @@ export function renderConfig(props: ConfigProps) {
       <!-- Sidebar -->
       <aside class="config-sidebar">
         <div class="config-sidebar__header">
-          <div class="config-sidebar__title">Settings</div>
+          <div class="config-sidebar__title">配置</div>
           <span
             class="pill pill--sm ${
-              validity === "valid" ? "pill--ok" : validity === "invalid" ? "pill--danger" : ""
+              validity === "有效" ? "pill--ok" : validity === "无效" ? "pill--danger" : ""
             }"
             >${validity}</span
           >
@@ -494,7 +522,7 @@ export function renderConfig(props: ConfigProps) {
             <input
               type="text"
               class="config-search__input"
-              placeholder="Search settings..."
+              placeholder="搜索配置..."
               .value=${props.searchQuery}
               @input=${(e: Event) => props.onSearchChange((e.target as HTMLInputElement).value)}
             />
@@ -512,13 +540,13 @@ export function renderConfig(props: ConfigProps) {
             }
           </div>
           <div class="config-search__hint">
-            <span class="config-search__hint-label" id="config-tag-filter-label">Tag filters:</span>
+            <span class="config-search__hint-label" id="config-tag-filter-label">标签过滤器:</span>
             <details class="config-search__tag-picker">
               <summary class="config-search__tag-trigger" aria-labelledby="config-tag-filter-label">
                 ${
                   selectedTags.size === 0
                     ? html`
-                        <span class="config-search__tag-placeholder">Add tags</span>
+                        <span class="config-search__tag-placeholder">添加标签</span>
                       `
                     : html`
                         <div class="config-search__tag-chips">
@@ -526,7 +554,7 @@ export function renderConfig(props: ConfigProps) {
                             .slice(0, 2)
                             .map(
                               (tag) =>
-                                html`<span class="config-search__tag-chip">tag:${tag}</span>`,
+                                html`<span class="config-search__tag-chip">标签:${tag}</span>`,
                             )}
                           ${
                             selectedTags.size > 2
@@ -574,7 +602,7 @@ export function renderConfig(props: ConfigProps) {
             @click=${() => props.onSectionChange(null)}
           >
             <span class="config-nav__icon">${sidebarIcons.all}</span>
-            <span class="config-nav__label">All Settings</span>
+            <span class="config-nav__label">全部设置</span>
           </button>
           ${allSections.map(
             (section) => html`
@@ -622,13 +650,13 @@ export function renderConfig(props: ConfigProps) {
                   <span class="config-changes-badge"
                     >${
                       props.formMode === "raw"
-                        ? "Unsaved changes"
-                        : `${diff.length} unsaved change${diff.length !== 1 ? "s" : ""}`
+                        ? "未保存的更改"
+                        : `${diff.length} 未保存的更改${diff.length !== 1 ? "s" : ""}`
                     }</span
                   >
                 `
                 : html`
-                    <span class="config-status muted">No changes</span>
+                    <span class="config-status muted">无更改</span>
                   `
             }
           </div>
@@ -638,28 +666,28 @@ export function renderConfig(props: ConfigProps) {
               ?disabled=${props.loading}
               @click=${props.onReload}
             >
-              ${props.loading ? "Loading…" : "Reload"}
+              ${props.loading ? "加载中..." : "重新加载"}
             </button>
             <button
               class="btn btn--sm primary"
               ?disabled=${!canSave}
               @click=${props.onSave}
             >
-              ${props.saving ? "Saving…" : "Save"}
+              ${props.saving ? "保存中..." : "保存"}
             </button>
             <button
               class="btn btn--sm"
               ?disabled=${!canApply}
               @click=${props.onApply}
             >
-              ${props.applying ? "Applying…" : "Apply"}
+              ${props.applying ? "应用中..." : "应用"}
             </button>
             <button
               class="btn btn--sm"
               ?disabled=${!canUpdate}
               @click=${props.onUpdate}
             >
-              ${props.updating ? "Updating…" : "Update"}
+              ${props.updating ? "更新中..." : "更新"}
             </button>
           </div>
         </div>
@@ -671,8 +699,8 @@ export function renderConfig(props: ConfigProps) {
               <details class="config-diff">
                 <summary class="config-diff__summary">
                   <span
-                    >View ${diff.length} pending
-                    change${diff.length !== 1 ? "s" : ""}</span
+                    >查看 ${diff.length} 个待处理
+                    更改${diff.length !== 1 ? "s" : ""}</span
                   >
                   <svg
                     class="config-diff__chevron"
@@ -767,7 +795,7 @@ export function renderConfig(props: ConfigProps) {
                     ? html`
                         <div class="config-loading">
                           <div class="config-loading__spinner"></div>
-                          <span>Loading schema…</span>
+                          <span>加载配置架构...</span>
                         </div>
                       `
                     : renderConfigForm({
@@ -786,7 +814,7 @@ export function renderConfig(props: ConfigProps) {
                   formUnsafe
                     ? html`
                         <div class="callout danger" style="margin-top: 12px">
-                          Form view can't safely edit some fields. Use Raw to avoid losing config entries.
+                          表单视图不能安全编辑某些字段。请使用原始 JSON5 模式避免丢失配置条目。
                         </div>
                       `
                     : nothing
@@ -794,7 +822,7 @@ export function renderConfig(props: ConfigProps) {
               `
               : html`
                 <label class="field config-raw-field">
-                  <span>Raw JSON5</span>
+                  <span>原始 JSON5 配置</span>
                   <textarea
                     .value=${props.raw}
                     @input=${(e: Event) =>

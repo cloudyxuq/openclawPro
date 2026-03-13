@@ -44,12 +44,14 @@ export function renderSkills(props: SkillsProps) {
         </div>
         <button class="btn" ?disabled=${props.loading} @click=${props.onRefresh}>
           ${props.loading ? "加载中…" : "刷新"}
+
         </button>
       </div>
 
       <div class="filters" style="margin-top: 14px;">
         <label class="field" style="flex: 1;">
           <span>过滤</span>
+
           <input
             .value=${props.filter}
             @input=${(e: Event) => props.onFilterChange((e.target as HTMLInputElement).value)}
@@ -57,6 +59,7 @@ export function renderSkills(props: SkillsProps) {
           />
         </label>
         <div class="muted">显示 ${filtered.length} 个</div>
+
       </div>
 
       ${

@@ -202,7 +202,7 @@ const TalkSchema = z
       });
     }
   });
-
+//配置中的sub子菜单。属性名的完整列表
 export const OpenClawSchema = z
   .object({
     $schema: z.string().optional(),

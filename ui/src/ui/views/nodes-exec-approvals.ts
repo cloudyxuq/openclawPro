@@ -196,9 +196,9 @@ export function renderExecApprovals(state: ExecApprovalsState) {
     <section class="card">
       <div class="row" style="justify-content: space-between; align-items: center;">
         <div>
-          <div class="card-title">Exec approvals</div>
+          <div class="card-title">执行审批</div>
           <div class="card-sub">
-            Allowlist and approval policy for <span class="mono">exec host=gateway/node</span>.
+            允许列表和审批策略，用于 <span class="mono">exec host=gateway/node</span>。
           </div>
         </div>
         <button
@@ -206,7 +206,7 @@ export function renderExecApprovals(state: ExecApprovalsState) {
           ?disabled=${state.disabled || !state.dirty || !targetReady}
           @click=${state.onSave}
         >
-          ${state.saving ? "Saving…" : "Save"}
+          ${state.saving ? "保存中..." : "保存"}
         </button>
       </div>
 
@@ -215,9 +215,9 @@ export function renderExecApprovals(state: ExecApprovalsState) {
       ${
         !ready
           ? html`<div class="row" style="margin-top: 12px; gap: 12px;">
-            <div class="muted">Load exec approvals to edit allowlists.</div>
+            <div class="muted">加载执行审批以编辑允许列表。</div>
             <button class="btn" ?disabled=${state.loading || !targetReady} @click=${state.onLoad}>
-              ${state.loading ? "Loading…" : "Load approvals"}
+              ${state.loading ? "加载中..." : "加载审批"}
             </button>
           </div>`
           : html`
@@ -241,14 +241,14 @@ function renderExecApprovalsTarget(state: ExecApprovalsState) {
     <div class="list" style="margin-top: 12px;">
       <div class="list-item">
         <div class="list-main">
-          <div class="list-title">Target</div>
+          <div class="list-title">目标</div>
           <div class="list-sub">
-            Gateway edits local approvals; node edits the selected node.
+            Gateway 编辑本地审批；Node 编辑选中节点。
           </div>
         </div>
         <div class="list-meta">
           <label class="field">
-            <span>Host</span>
+            <span>主机</span>
             <select
               ?disabled=${state.disabled}
               @change=${(event: Event) => {
@@ -270,7 +270,7 @@ function renderExecApprovalsTarget(state: ExecApprovalsState) {
             state.target === "node"
               ? html`
                 <label class="field">
-                  <span>Node</span>
+                  <span>节点</span>
                   <select
                     ?disabled=${state.disabled || !hasNodes}
                     @change=${(event: Event) => {
@@ -299,7 +299,7 @@ function renderExecApprovalsTarget(state: ExecApprovalsState) {
       ${
         state.target === "node" && !hasNodes
           ? html`
-              <div class="muted">No nodes advertise exec approvals yet.</div>
+              <div class="muted">暂无节点广告执行审批。</div>
             `
           : nothing
       }
@@ -310,7 +310,7 @@ function renderExecApprovalsTarget(state: ExecApprovalsState) {
 function renderExecApprovalsTabs(state: ExecApprovalsState) {
   return html`
     <div class="row" style="margin-top: 12px; gap: 8px; flex-wrap: wrap;">
-      <span class="label">Scope</span>
+      <span class="label">范围</span>
       <div class="row" style="gap: 8px; flex-wrap: wrap;">
         <button
           class="btn btn--sm ${state.selectedScope === EXEC_APPROVALS_DEFAULT_SCOPE ? "active" : ""}"
@@ -354,14 +354,14 @@ function renderExecApprovalsPolicy(state: ExecApprovalsState) {
     <div class="list" style="margin-top: 16px;">
       <div class="list-item">
         <div class="list-main">
-          <div class="list-title">Security</div>
+          <div class="list-title">安全</div>
           <div class="list-sub">
-            ${isDefaults ? "Default security mode." : `Default: ${defaults.security}.`}
+            ${isDefaults ? "默认安全模式。" : `默认: ${defaults.security}.`}
           </div>
         </div>
         <div class="list-meta">
           <label class="field">
-            <span>Mode</span>
+            <span>模式</span>
             <select
               ?disabled=${state.disabled}
               @change=${(event: Event) => {
@@ -377,7 +377,7 @@ function renderExecApprovalsPolicy(state: ExecApprovalsState) {
               ${
                 !isDefaults
                   ? html`<option value="__default__" ?selected=${securityValue === "__default__"}>
-                    Use default (${defaults.security})
+                    使用默认（${defaults.security}）
                   </option>`
                   : nothing
               }
@@ -397,14 +397,14 @@ function renderExecApprovalsPolicy(state: ExecApprovalsState) {
 
       <div class="list-item">
         <div class="list-main">
-          <div class="list-title">Ask</div>
+          <div class="list-title">提示</div>
           <div class="list-sub">
-            ${isDefaults ? "Default prompt policy." : `Default: ${defaults.ask}.`}
+            ${isDefaults ? "默认提示策略。" : `默认: ${defaults.ask}.`}
           </div>
         </div>
         <div class="list-meta">
           <label class="field">
-            <span>Mode</span>
+            <span>模式</span>
             <select
               ?disabled=${state.disabled}
               @change=${(event: Event) => {
@@ -440,18 +440,14 @@ function renderExecApprovalsPolicy(state: ExecApprovalsState) {
 
       <div class="list-item">
         <div class="list-main">
-          <div class="list-title">Ask fallback</div>
+          <div class="list-title">回退策略</div>
           <div class="list-sub">
-            ${
-              isDefaults
-                ? "Applied when the UI prompt is unavailable."
-                : `Default: ${defaults.askFallback}.`
-            }
+            ${isDefaults ? "当UI提示不可用时应用。" : `默认: ${defaults.askFallback}.`}
           </div>
         </div>
         <div class="list-meta">
           <label class="field">
-            <span>Fallback</span>
+            <span>回退</span>
             <select
               ?disabled=${state.disabled}
               @change=${(event: Event) => {
@@ -487,20 +483,20 @@ function renderExecApprovalsPolicy(state: ExecApprovalsState) {
 
       <div class="list-item">
         <div class="list-main">
-          <div class="list-title">Auto-allow skill CLIs</div>
+          <div class="list-title">自动允许技能 CLI</div>
           <div class="list-sub">
             ${
               isDefaults
-                ? "Allow skill executables listed by the Gateway."
+                ? "允许由网关列出的技能可执行文件。"
                 : autoIsDefault
-                  ? `Using default (${defaults.autoAllowSkills ? "on" : "off"}).`
-                  : `Override (${autoEffective ? "on" : "off"}).`
+                  ? `使用默认（${defaults.autoAllowSkills ? "on" : "off"}）。`
+                  : `覆盖（${autoEffective ? "on" : "off"}）。`
             }
           </div>
         </div>
         <div class="list-meta">
           <label class="field">
-            <span>Enabled</span>
+            <span>是否启用</span>
             <input
               type="checkbox"
               ?disabled=${state.disabled}
@@ -534,8 +530,8 @@ function renderExecApprovalsAllowlist(state: ExecApprovalsState) {
   return html`
     <div class="row" style="margin-top: 18px; justify-content: space-between;">
       <div>
-        <div class="card-title">Allowlist</div>
-        <div class="card-sub">Case-insensitive glob patterns.</div>
+        <div class="card-title">允许列表</div>
+        <div class="card-sub">不区分大小写的glob模式。</div>
       </div>
       <button
         class="btn btn--sm"
@@ -545,14 +541,14 @@ function renderExecApprovalsAllowlist(state: ExecApprovalsState) {
           state.onPatch(allowlistPath, next);
         }}
       >
-        Add pattern
+        添加模式
       </button>
     </div>
     <div class="list" style="margin-top: 12px;">
       ${
         entries.length === 0
           ? html`
-              <div class="muted">No allowlist entries yet.</div>
+              <div class="muted">暂无允许列表条目。</div>
             `
           : entries.map((entry, index) => renderAllowlistEntry(state, entry, index))
       }
@@ -571,8 +567,8 @@ function renderAllowlistEntry(
   return html`
     <div class="list-item">
       <div class="list-main">
-        <div class="list-title">${entry.pattern?.trim() ? entry.pattern : "New pattern"}</div>
-        <div class="list-sub">Last used: ${lastUsed}</div>
+        <div class="list-title">${entry.pattern?.trim() ? entry.pattern : "新模式"}</div>
+        <div class="list-sub">最后使用时间: ${lastUsed}</div>
         ${lastCommand ? html`<div class="list-sub mono">${lastCommand}</div>` : nothing}
         ${lastPath ? html`<div class="list-sub mono">${lastPath}</div>` : nothing}
       </div>

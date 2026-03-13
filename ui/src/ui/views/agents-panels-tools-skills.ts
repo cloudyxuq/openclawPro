@@ -126,10 +126,9 @@ export function renderAgentTools(params: {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Tool Access</div>
+          <div class="card-title">工具访问</div>
           <div class="card-sub">
-            Profile + per-tool overrides for this agent.
-            <span class="mono">${enabledCount}/${toolIds.length}</span> enabled.
+            此智能体的工具配置。<span class="mono">${enabledCount}/${toolIds.length}</span> 个工具已启用。
           </div>
         </div>
         <div class="row" style="gap: 8px;">
@@ -141,6 +140,7 @@ export function renderAgentTools(params: {
           </button>
           <button class="btn btn--sm" ?disabled=${params.configLoading} @click=${params.onConfigReload}>
             重新加载配置
+
           </button>
           <button
             class="btn btn--sm primary"
@@ -155,18 +155,14 @@ export function renderAgentTools(params: {
       ${
         params.toolsCatalogError
           ? html`
-              <div class="callout warn" style="margin-top: 12px">
-                Could not load runtime tool catalog. Showing fallback list.
-              </div>
+              <div class="callout warn" style="margin-top: 12px">无法加载运行时工具目录。显示后备列表。</div>
             `
           : nothing
       }
       ${
         !params.configForm
           ? html`
-              <div class="callout info" style="margin-top: 12px">
-                Load the gateway config to adjust tool profiles.
-              </div>
+              <div class="callout info" style="margin-top: 12px">加载网关配置以调整工具配置文件。</div>
             `
           : nothing
       }
@@ -174,7 +170,7 @@ export function renderAgentTools(params: {
         hasAgentAllow
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                This agent is using an explicit allowlist in config. Tool overrides are managed in the Config tab.
+                此智能体在配置中使用显式允许列表。工具覆盖在 Config 选项卡中管理。
               </div>
             `
           : nothing
@@ -195,7 +191,7 @@ export function renderAgentTools(params: {
           <div class="mono">${profile}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">Source</div>
+          <div class="label">来源</div>
           <div>${profileSource}</div>
         </div>
         ${
@@ -211,7 +207,8 @@ export function renderAgentTools(params: {
       </div>
 
       <div class="agent-tools-presets" style="margin-top: 16px;">
-        <div class="label">快速预设</div> 
+        <div class="label">快速预设</div>
+
         <div class="agent-tools-buttons">
           ${profileOptions.map(
             (option) => html`
@@ -351,9 +348,9 @@ export function renderAgentSkills(params: {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Skills</div>
+          <div class="card-title">技能</div>
           <div class="card-sub">
-            Per-agent skill allowlist and workspace skills.
+            每个智能体的技能允许列表和工作空间技能。  
             ${
               totalCount > 0
                 ? html`<span class="mono">${enabledCount}/${totalCount}</span>`
@@ -363,27 +360,27 @@ export function renderAgentSkills(params: {
         </div>
         <div class="row" style="gap: 8px;">
           <button class="btn btn--sm" ?disabled=${!editable} @click=${() => params.onClear(params.agentId)}>
-            Use All
+            使用所有
           </button>
           <button
             class="btn btn--sm"
             ?disabled=${!editable}
             @click=${() => params.onDisableAll(params.agentId)}
           >
-            Disable All
+            禁用所有
           </button>
           <button class="btn btn--sm" ?disabled=${params.configLoading} @click=${params.onConfigReload}>
-            Reload Config
+            重新加载
           </button>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
-            ${params.loading ? "Loading…" : "Refresh"}
+            ${params.loading ? "加载中…" : "刷新"}
           </button>
           <button
             class="btn btn--sm primary"
             ?disabled=${params.configSaving || !params.configDirty}
             @click=${params.onConfigSave}
           >
-            ${params.configSaving ? "Saving…" : "Save"}
+            ${params.configSaving ? "保存中…" : "保存"}
           </button>
         </div>
       </div>
@@ -391,20 +388,18 @@ export function renderAgentSkills(params: {
       ${
         !params.configForm
           ? html`
-              <div class="callout info" style="margin-top: 12px">
-                Load the gateway config to set per-agent skills.
-              </div>
+              <div class="callout info" style="margin-top: 12px">加载网关配置以设置智能体特定的技能。</div>
             `
           : nothing
       }
       ${
         usingAllowlist
           ? html`
-              <div class="callout info" style="margin-top: 12px">This agent uses a custom skill allowlist.</div>
+              <div class="callout info" style="margin-top: 12px">此智能体使用自定义技能允许列表。</div>
             `
           : html`
               <div class="callout info" style="margin-top: 12px">
-                All skills are enabled. Disabling any skill will create a per-agent allowlist.
+                所有技能均已启用。禁用任何技能将创建一个智能体特定的允许列表。
               </div>
             `
       }
@@ -412,7 +407,7 @@ export function renderAgentSkills(params: {
         !reportReady && !params.loading
           ? html`
               <div class="callout info" style="margin-top: 12px">
-                Load skills for this agent to view workspace-specific entries.
+                加载此智能体的技能以查看工作空间特定的条目。
               </div>
             `
           : nothing
@@ -425,20 +420,20 @@ export function renderAgentSkills(params: {
 
       <div class="filters" style="margin-top: 14px;">
         <label class="field" style="flex: 1;">
-          <span>Filter</span>
+          <span>筛选技能</span>
           <input
             .value=${params.filter}
             @input=${(e: Event) => params.onFilterChange((e.target as HTMLInputElement).value)}
-            placeholder="Search skills"
+            placeholder="搜索技能"
           />
         </label>
-        <div class="muted">${filtered.length} shown</div>
+        <div class="muted">${filtered.length} 个技能显示</div>
       </div>
 
       ${
         filtered.length === 0
           ? html`
-              <div class="muted" style="margin-top: 16px">No skills found.</div>
+              <div class="muted" style="margin-top: 16px">未找到技能。</div>
             `
           : html`
               <div class="agent-skills-groups" style="margin-top: 16px;">

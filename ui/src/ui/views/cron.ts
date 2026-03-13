@@ -1050,7 +1050,7 @@ export function renderCron(props: CronProps) {
                   placeholder="agent:main:main"
                 />
                 <div class="cron-help">
-                  Optional routing key for job delivery and wake routing.
+                  可选的路由 key，用于作业投递与唤醒路由。
                 </div>
               </label>
               ${
@@ -1128,7 +1128,7 @@ export function renderCron(props: CronProps) {
                           placeholder="default"
                         />
                         <div class="cron-help">
-                          Optional channel account ID for multi-account setups.
+                          可选的频道账户 ID，用于多账户设置。
                         </div>
                       </label>
                       <label class="field checkbox cron-checkbox cron-span-2">
@@ -1142,7 +1142,7 @@ export function renderCron(props: CronProps) {
                         />
                         <span class="field-checkbox__label">Light context</span>
                         <div class="cron-help">
-                          Use lightweight bootstrap context for this agent job.
+                          使用轻量级引导上下文为该智能体作业。
                         </div>
                       </label>
                       <label class="field">
@@ -1189,12 +1189,12 @@ export function renderCron(props: CronProps) {
                                 .value as CronFormState["failureAlertMode"],
                             })}
                         >
-                          <option value="inherit">Inherit global setting</option>
-                          <option value="disabled">Disable for this job</option>
-                          <option value="custom">Custom per-job settings</option>
+                          <option value="inherit">继承全局设置</option>
+                          <option value="disabled">禁用此作业的重复失败警报</option>
+                          <option value="custom">自定义每个作业的设置</option>
                         </select>
                         <div class="cron-help">
-                          Control when this job sends repeated-failure alerts.
+                          控制此作业发送重复失败警报的时间。
                         </div>
                       </label>
                       ${
@@ -1217,7 +1217,9 @@ export function renderCron(props: CronProps) {
                                     })}
                                   placeholder="2"
                                 />
-                                <div class="cron-help">Consecutive errors before alerting.</div>
+                                <div class="cron-help">
+                                  触发告警前的连续错误次数。
+                                </div>
                                 ${renderFieldError(
                                   props.fieldErrors.failureAlertAfter,
                                   errorIdForField("failureAlertAfter"),
@@ -1241,7 +1243,9 @@ export function renderCron(props: CronProps) {
                                     })}
                                   placeholder="3600"
                                 />
-                                <div class="cron-help">Minimum seconds between alerts.</div>
+                                <div class="cron-help">
+                                  触发告警后的冷却时间（秒）。
+                                </div>
                                 ${renderFieldError(
                                   props.fieldErrors.failureAlertCooldownSeconds,
                                   errorIdForField("failureAlertCooldownSeconds"),
@@ -1276,7 +1280,7 @@ export function renderCron(props: CronProps) {
                                   placeholder="+1555... or chat id"
                                 />
                                 <div class="cron-help">
-                                  Optional recipient override for failure alerts.
+                                  可选的失败告警接收人覆盖。
                                 </div>
                               </label>
                               <label class="field">
@@ -1289,8 +1293,8 @@ export function renderCron(props: CronProps) {
                                         .value as CronFormState["failureAlertDeliveryMode"],
                                     })}
                                 >
-                                  <option value="announce">Announce (via channel)</option>
-                                  <option value="webhook">Webhook (HTTP POST)</option>
+                                  <option value="announce">通过渠道公告（Announce）</option>
+                                  <option value="webhook">Webhook（HTTP POST）</option>
                                 </select>
                               </label>
                               <label class="field">
@@ -1301,7 +1305,7 @@ export function renderCron(props: CronProps) {
                                     props.onFormChange({
                                       failureAlertAccountId: (e.target as HTMLInputElement).value,
                                     })}
-                                  placeholder="Account ID for multi-account setups"
+                                  placeholder="多账户设置时的账户ID"
                                 />
                               </label>
                             `

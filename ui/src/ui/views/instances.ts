@@ -15,11 +15,11 @@ export function renderInstances(props: InstancesProps) {
     <section class="card">
       <div class="row" style="justify-content: space-between;">
         <div>
-          <div class="card-title">Connected Instances</div>
-          <div class="card-sub">Presence beacons from the gateway and clients.</div>
+          <div class="card-title">已连接的实例</div>
+          <div class="card-sub">从网关和客户端接收的存在信标。</div>
         </div>
         <button class="btn" ?disabled=${props.loading} @click=${props.onRefresh}>
-          ${props.loading ? "Loading…" : "Refresh"}
+          ${props.loading ? "加载中..." : "刷新"}
         </button>
       </div>
       ${
@@ -40,7 +40,7 @@ export function renderInstances(props: InstancesProps) {
         ${
           props.entries.length === 0
             ? html`
-                <div class="muted">No instances reported yet.</div>
+                <div class="muted">暂无实例报告。</div>
               `
             : props.entries.map((entry) => renderEntry(entry))
         }

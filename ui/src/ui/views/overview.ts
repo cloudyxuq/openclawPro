@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { ConnectErrorDetailCodes } from "../../../../src/gateway/protocol/connect-error-details.js";
-import { t, i18n, SUPPORTED_LOCALES, type Locale } from "../../i18n/index.ts";
+import { t } from "../../i18n/index.ts";
 import { buildExternalLinkRel, EXTERNAL_LINK_TARGET } from "../external-link.ts";
 import { formatRelativeTimestamp, formatDurationHuman } from "../format.ts";
 import type { GatewayHelloOk } from "../gateway.ts";
@@ -191,8 +191,6 @@ export function renderOverview(props: OverviewProps) {
     `;
   })();
 
-  const currentLocale = i18n.getLocale();
-
   return html`
     <section class="grid grid-cols-2">
       <div class="card">
@@ -252,22 +250,6 @@ export function renderOverview(props: OverviewProps) {
                 props.onSessionKeyChange(v);
               }}
             />
-          </label>
-          <label class="field">
-            <span>${t("overview.access.language")}</span>
-            <select
-              .value=${currentLocale}
-              @change=${(e: Event) => {
-                const v = (e.target as HTMLSelectElement).value as Locale;
-                void i18n.setLocale(v);
-                props.onSettingsChange({ ...props.settings, locale: v });
-              }}
-            >
-              ${SUPPORTED_LOCALES.map((loc) => {
-                const key = loc.replace(/-([a-zA-Z])/g, (_, c) => c.toUpperCase());
-                return html`<option value=${loc}>${t(`languages.${key}`)}</option>`;
-              })}
-            </select>
           </label>
         </div>
         <div class="row" style="margin-top: 14px;">

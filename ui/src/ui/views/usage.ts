@@ -440,25 +440,25 @@ export function renderUsage(props: UsageProps) {
     <style>${usageStylesString}</style>
 
     <section class="usage-page-header">
-      <div class="usage-page-title">Usage</div>
-      <div class="usage-page-subtitle">See where tokens go, when sessions spike, and what drives cost.</div>
+      <div class="usage-page-title">使用情况</div>
+      <div class="usage-page-subtitle">查看tokens流向、会话高峰和成本驱动因素。</div>
     </section>
 
     <section class="card usage-header ${props.headerPinned ? "pinned" : ""}">
       <div class="usage-header-row">
         <div class="usage-header-title">
-          <div class="card-title" style="margin: 0;">Filters</div>
+          <div class="card-title" style="margin: 0;">筛选器</div>
           ${
             props.loading
               ? html`
-                  <span class="usage-refresh-indicator">Loading</span>
+                  <span class="usage-refresh-indicator">加载中...</span>
                 `
               : nothing
           }
           ${
             isEmpty
               ? html`
-                  <span class="usage-query-hint">Select a date range and click Refresh to load usage.</span>
+                  <span class="usage-query-hint">选择日期范围并点击刷新以加载使用情况。</span>
                 `
               : nothing
           }
@@ -471,21 +471,21 @@ export function renderUsage(props: UsageProps) {
                   <strong>${formatTokens(displayTotals.totalTokens)}</strong> tokens
                 </span>
                 <span class="usage-metric-badge">
-                  <strong>${formatCost(displayTotals.totalCost)}</strong> cost
+                  <strong>${formatCost(displayTotals.totalCost)}</strong> 成本
                 </span>
                 <span class="usage-metric-badge">
                   <strong>${displaySessionCount}</strong>
-                  session${displaySessionCount !== 1 ? "s" : ""}
+                  会话${displaySessionCount !== 1 ? "s" : ""} 
                 </span>
               `
               : nothing
           }
           <button
             class="usage-pin-btn ${props.headerPinned ? "active" : ""}"
-            title=${props.headerPinned ? "Unpin filters" : "Pin filters"}
+            title=${props.headerPinned ? "取消固定筛选器" : "固定筛选器"}
             @click=${props.onToggleHeaderPinned}
           >
-            ${props.headerPinned ? "Pinned" : "Pin"}
+            ${props.headerPinned ? "已固定" : "固定"}
           </button>
           <details
             class="usage-export-menu"
@@ -504,7 +504,7 @@ export function renderUsage(props: UsageProps) {
               window.addEventListener("click", onClick, true);
             }}
           >
-            <summary class="usage-export-button">Export ▾</summary>
+            <summary class="usage-export-button">导出 ▾</summary>
             <div class="usage-export-popover">
               <div class="usage-export-list">
                 <button
@@ -517,7 +517,7 @@ export function renderUsage(props: UsageProps) {
                     )}
                   ?disabled=${filteredSessions.length === 0}
                 >
-                  Sessions CSV
+                  会话CSV
                 </button>
                 <button
                   class="usage-export-item"
@@ -529,7 +529,7 @@ export function renderUsage(props: UsageProps) {
                     )}
                   ?disabled=${filteredDaily.length === 0}
                 >
-                  Daily CSV
+                  每日 CSV
                 </button>
                 <button
                   class="usage-export-item"
@@ -611,7 +611,7 @@ export function renderUsage(props: UsageProps) {
               class="toggle-btn ${!isTokenMode ? "active" : ""}"
               @click=${() => props.onChartModeChange("cost")}
             >
-              Cost
+              成本
             </button>
           </div>
           <button
@@ -619,7 +619,7 @@ export function renderUsage(props: UsageProps) {
             @click=${props.onRefresh}
             ?disabled=${props.loading}
           >
-            Refresh
+            刷新
           </button>
         </div>
         
@@ -631,7 +631,7 @@ export function renderUsage(props: UsageProps) {
             class="usage-query-input"
             type="text"
             .value=${props.queryDraft}
-            placeholder="Filter sessions (e.g. key:agent:main:cron* model:gpt-4o has:errors minTokens:2000)"
+            placeholder="筛选会话（例如：key:agent:main:cron* model:gpt-4o has:errors minTokens:2000）" 
             @input=${(e: Event) => props.onQueryDraftChange((e.target as HTMLInputElement).value)}
             @keydown=${(e: KeyboardEvent) => {
               if (e.key === "Enter") {
@@ -646,18 +646,18 @@ export function renderUsage(props: UsageProps) {
               @click=${props.onApplyQuery}
               ?disabled=${props.loading || (!hasDraftQuery && !hasQuery)}
             >
-              Filter (client-side)
+              筛选（客户端）
             </button>
             ${
               hasDraftQuery || hasQuery
-                ? html`<button class="btn btn-sm usage-action-btn usage-secondary-btn" @click=${props.onClearQuery}>Clear</button>`
+                ? html`<button class="btn btn-sm usage-action-btn usage-secondary-btn" @click=${props.onClearQuery}>清除筛选</button>`
                 : nothing
             }
             <span class="usage-query-hint">
               ${
                 hasQuery
-                  ? `${filteredSessions.length} of ${totalSessions} sessions match`
-                  : `${totalSessions} sessions in range`
+                  ? `${filteredSessions.length} of ${totalSessions} 会话匹配`
+                  : `${totalSessions} 会话在范围内`
               }
             </span>
           </div>
@@ -669,7 +669,7 @@ export function renderUsage(props: UsageProps) {
           ${renderFilterSelect("model", "Model", modelOptions)}
           ${renderFilterSelect("tool", "Tool", toolOptions)}
           <span class="usage-query-hint">
-            Tip: use filters or click bars to filter days.
+            Tip: 筛选会话时可以使用筛选器或点击图表栏来筛选日期。
           </span>
         </div>
         ${

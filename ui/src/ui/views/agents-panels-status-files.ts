@@ -44,7 +44,8 @@ function renderAgentContextCard(context: AgentContext, subtitle: string) {
           <div>${context.skillsLabel}</div>
         </div>
         <div class="agent-kv">
-          <div class="label">默认</div>
+          <div class="label">默认值</div>
+
           <div>${context.isDefault ? "是" : "否"}</div>
         </div>
       </div>
@@ -144,15 +145,16 @@ export function renderAgentChannels(params: {
     : "never";
   return html`
     <section class="grid grid-cols-2">
-      ${renderAgentContextCard(params.context, "Workspace, identity, and model configuration.")}
+      ${renderAgentContextCard(params.context, "工作空间, 身份, 和模型配置.")}
       <section class="card">
         <div class="row" style="justify-content: space-between;">
           <div>
-            <div class="card-title">通道</div>
-            <div class="card-sub">网关-wide通道状态快照。</div>
+            <div class="card-title">频道</div>
+            <div class="card-sub">网关-wide 频道状态快照。</div>
           </div>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
             ${params.loading ? "刷新中…" : "刷新"}
+
           </button>
         </div>
         <div class="muted" style="margin-top: 8px;">
@@ -166,14 +168,14 @@ export function renderAgentChannels(params: {
         ${
           !params.snapshot
             ? html`
-                <div class="callout info" style="margin-top: 12px">加载通道以查看实时状态。</div>
+                <div class="callout info" style="margin-top: 12px">加载频道以查看实时状态。</div>
               `
             : nothing
         }
         ${
           entries.length === 0
             ? html`
-                <div class="muted" style="margin-top: 16px">未找到通道。</div>
+                <div class="muted" style="margin-top: 16px">未找到频道。</div>
               `
             : html`
                 <div class="list" style="margin-top: 16px;">
@@ -181,7 +183,8 @@ export function renderAgentChannels(params: {
                     const summary = summarizeChannelAccounts(entry.accounts);
                     const status = summary.total
                       ? `${summary.connected}/${summary.total} 已连接`
-                      : "无账号";
+                      : "未连接任何账号";
+
                     const config = summary.configured ? `${summary.configured} 已配置` : "未配置";
                     const enabled = summary.total ? `${summary.enabled} 已启用` : "已禁用";
                     const extras = resolveChannelExtrasFromConfig({
@@ -230,15 +233,16 @@ export function renderAgentCron(params: {
   const jobs = params.jobs.filter((job) => job.agentId === params.agentId);
   return html`
     <section class="grid grid-cols-2">
-      ${renderAgentContextCard(params.context, "Workspace and scheduling targets.")}
+      ${renderAgentContextCard(params.context, "工作空间和计划任务目标.")}
       <section class="card">
         <div class="row" style="justify-content: space-between;">
           <div>
-            <div class="card-title">调度器</div>
-            <div class="card-sub">网关 cron 状态。</div>
+            <div class="card-title">计划任务</div>
+            <div class="card-sub">网关-wide 计划任务状态。</div>
           </div>
           <button class="btn btn--sm" ?disabled=${params.loading} @click=${params.onRefresh}>
             ${params.loading ? "刷新中…" : "刷新"}
+
           </button>
         </div>
         <div class="stat-grid" style="margin-top: 16px;">
@@ -249,11 +253,12 @@ export function renderAgentCron(params: {
             </div>
           </div>
           <div class="stat">
-            <div class="stat-label">作业数</div>
+            <div class="stat-label">计划任务数</div>
             <div class="stat-value">${params.status?.jobs ?? "n/a"}</div>
           </div>
           <div class="stat">
             <div class="stat-label">下次唤醒时间</div>
+
             <div class="stat-value">${formatNextRun(params.status?.nextWakeAtMs ?? null)}</div>
           </div>
         </div>
@@ -265,14 +270,15 @@ export function renderAgentCron(params: {
       </section>
     </section>
     <section class="card">
-      <div class="card-title">智能体 Cron 作业</div>
-      <div class="card-sub">目标此智能体的计划作业。</div>
+      <div class="card-title">智能体计划任务</div>
+      <div class="card-sub">目标为该智能体的计划任务。</div>
       ${
         jobs.length === 0
           ? html`
-              <div class="muted" style="margin-top: 16px">未分配作业。</div>
+              <div class="muted" style="margin-top: 16px">未分配计划任务。</div>
             `
           : html`
+
               <div class="list" style="margin-top: 16px;">
                 ${jobs.map(
                   (job) => html`
@@ -334,7 +340,8 @@ export function renderAgentFiles(params: {
       <div class="row" style="justify-content: space-between;">
         <div>
           <div class="card-title">核心文件</div>
-          <div class="card-sub">引导人物、身份和工具指导。</div>
+          <div class="card-sub">引导智能体的人物、身份和工具指导。</div>
+
         </div>
         <button
           class="btn btn--sm"
@@ -342,11 +349,12 @@ export function renderAgentFiles(params: {
           @click=${() => params.onLoadFiles(params.agentId)}
         >
           ${params.agentFilesLoading ? "加载中…" : "刷新"}
+
         </button>
       </div>
       ${
         list
-          ? html`<div class="muted mono" style="margin-top: 8px;">Workspace: ${list.workspace}</div>`
+          ? html`<div class="muted mono" style="margin-top: 8px;">工作空间: ${list.workspace}</div>`
           : nothing
       }
       ${
@@ -357,7 +365,7 @@ export function renderAgentFiles(params: {
       ${
         !list
           ? html`
-              <div class="callout info" style="margin-top: 12px">加载智能体工作区文件以编辑核心指令。</div>
+              <div class="callout info" style="margin-top: 12px">加载智能体工作空间文件以编辑核心指令。</div>
             `
           : html`
               <div class="agent-files-grid" style="margin-top: 16px;">
@@ -376,7 +384,7 @@ export function renderAgentFiles(params: {
                   ${
                     !activeEntry
                       ? html`
-                          <div class="muted">Select a file to edit.</div>
+                          <div class="muted">选择文件以编辑。</div>
                         `
                       : html`
                           <div class="agent-file-header">
@@ -390,28 +398,26 @@ export function renderAgentFiles(params: {
                                 ?disabled=${!isDirty}
                                 @click=${() => params.onFileReset(activeEntry.name)}
                               >
-                                Reset
+                                重置
                               </button>
                               <button
                                 class="btn btn--sm primary"
                                 ?disabled=${params.agentFileSaving || !isDirty}
                                 @click=${() => params.onFileSave(activeEntry.name)}
                               >
-                                ${params.agentFileSaving ? "Saving…" : "Save"}
+                                ${params.agentFileSaving ? "保存中..." : "保存"}
                               </button>
                             </div>
                           </div>
                           ${
                             activeEntry.missing
                               ? html`
-                                  <div class="callout info" style="margin-top: 10px">
-                                    This file is missing. Saving will create it in the agent workspace.
-                                  </div>
+                                  <div class="callout info" style="margin-top: 10px">此文件缺失。保存将在智能体工作空间创建它。</div>
                                 `
                               : nothing
                           }
                           <label class="field" style="margin-top: 12px;">
-                            <span>Content</span>
+                            <span>内容</span>
                             <textarea
                               .value=${draft}
                               @input=${(e: Event) =>
@@ -448,7 +454,7 @@ function renderAgentFileRow(file: AgentFileEntry, active: string | null, onSelec
       ${
         file.missing
           ? html`
-              <span class="agent-pill warn">missing</span>
+              <span class="agent-pill warn">缺失</span>
             `
           : nothing
       }
