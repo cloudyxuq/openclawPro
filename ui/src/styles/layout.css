@@ -5,20 +5,21 @@
 .shell {
   --shell-pad: 16px;
   --shell-gap: 16px;
-  --shell-nav-width: 220px;
+  --shell-nav-height: 48px;
   --shell-topbar-height: 56px;
   --shell-focus-duration: 200ms;
   --shell-focus-ease: var(--ease-out);
   height: 100vh;
   display: grid;
-  grid-template-columns: var(--shell-nav-width) minmax(0, 1fr);
-  grid-template-rows: var(--shell-topbar-height) 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--shell-topbar-height) var(--shell-nav-height) 1fr;
   grid-template-areas:
-    "topbar topbar"
-    "nav content";
+    "topbar"
+    "nav"
+    "content";
   gap: 0;
   animation: dashboard-enter 0.4s var(--ease-out);
-  transition: grid-template-columns var(--shell-focus-duration) var(--shell-focus-ease);
+  transition: grid-template-rows var(--shell-focus-duration) var(--shell-focus-ease);
   overflow: hidden;
 }
 
@@ -41,11 +42,11 @@
 }
 
 .shell--nav-collapsed {
-  grid-template-columns: 0px minmax(0, 1fr);
+  grid-template-rows: var(--shell-topbar-height) 0px 1fr;
 }
 
 .shell--chat-focus {
-  grid-template-columns: 0px minmax(0, 1fr);
+  grid-template-rows: var(--shell-topbar-height) 0px 1fr;
 }
 
 .shell--onboarding {
@@ -196,16 +197,21 @@
 
 .nav {
   grid-area: nav;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 16px 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 16px;
   background: var(--bg);
+  border-bottom: 1px solid var(--border);
   scrollbar-width: none; /* Firefox */
   transition:
-    width var(--shell-focus-duration) var(--shell-focus-ease),
+    height var(--shell-focus-duration) var(--shell-focus-ease),
     padding var(--shell-focus-duration) var(--shell-focus-ease),
     opacity var(--shell-focus-duration) var(--shell-focus-ease);
   min-height: 0;
+  gap: 12px;
 }
 
 .nav::-webkit-scrollbar {
@@ -213,7 +219,7 @@
 }
 
 .shell--chat-focus .nav {
-  width: 0;
+  height: 0;
   padding: 0;
   border-width: 0;
   overflow: hidden;
@@ -222,8 +228,8 @@
 }
 
 .nav--collapsed {
-  width: 0;
-  min-width: 0;
+  height: 0;
+  min-height: 0;
   padding: 0;
   overflow: hidden;
   border: none;
@@ -279,18 +285,14 @@
 
 /* Nav groups */
 .nav-group {
-  margin-bottom: 20px;
-  display: grid;
-  gap: 2px;
-}
-
-.nav-group:last-child {
-  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .nav-group__items {
-  display: grid;
-  gap: 1px;
+  display: flex;
+  gap: 4px;
 }
 
 .nav-group--collapsed .nav-group__items {
@@ -301,18 +303,15 @@
 .nav-label {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  width: 100%;
+  justify-content: center;
+  gap: 4px;
   padding: 6px 10px;
   font-size: 11px;
   font-weight: 500;
   color: var(--muted);
-  margin-bottom: 4px;
   background: transparent;
   border: none;
   cursor: pointer;
-  text-align: left;
   border-radius: var(--radius-sm);
   transition:
     color var(--duration-fast) ease,
@@ -333,9 +332,7 @@
   background: transparent;
 }
 
-.nav-label__text {
-  flex: 1;
-}
+
 
 .nav-label__chevron {
   font-size: 10px;
@@ -406,7 +403,10 @@
 
 .nav-item.active {
   color: var(--text-strong);
-  background: var(--accent-subtle);
+  background: transparent;
+  border-bottom: 2px solid var(--danger-color, red);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .nav-item.active .nav-item__icon {
@@ -569,31 +569,13 @@
   .shell {
     --shell-pad: 12px;
     --shell-gap: 12px;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-    grid-template-areas:
-      "topbar"
-      "nav"
-      "content";
   }
 
   .nav {
-    position: static;
-    max-height: none;
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 10px 14px;
-    background: var(--bg);
+    padding: 0 14px;
   }
 
-  .nav-group {
-    grid-auto-flow: column;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    margin-bottom: 0;
-  }
+
 
   .grid-cols-2,
   .grid-cols-3 {

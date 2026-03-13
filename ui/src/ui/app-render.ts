@@ -273,12 +273,14 @@ export function renderApp(state: AppViewState) {
           ${renderThemeToggle(state)}
         </div>
       </header>
+      
       <aside class="nav ${state.settings.navCollapsed ? "nav--collapsed" : ""}">
         ${TAB_GROUPS.map((group) => {
           const isGroupCollapsed = state.settings.navGroupsCollapsed[group.label] ?? false;
           const hasActiveTab = group.tabs.some((tab) => tab === state.tab);
           return html`
             <div class="nav-group ${isGroupCollapsed && !hasActiveTab ? "nav-group--collapsed" : ""}">
+              <!-- 分组注释
               <button
                 class="nav-label"
                 @click=${() => {
@@ -294,12 +296,15 @@ export function renderApp(state: AppViewState) {
                 <span class="nav-label__text">${t(`nav.${group.label}`)}</span>
                 <span class="nav-label__chevron">${isGroupCollapsed ? "+" : "−"}</span>
               </button>
+              -->
+              
               <div class="nav-group__items">
                 ${group.tabs.map((tab) => renderTab(state, tab))}
               </div>
             </div>
           `;
         })}
+           <!-- 分组注释，删除文档快捷
         <div class="nav-group nav-group--links">
           <div class="nav-label nav-label--static">
             <span class="nav-label__text">${t("common.resources")}</span>
@@ -317,6 +322,7 @@ export function renderApp(state: AppViewState) {
             </a>
           </div>
         </div>
+        -->
       </aside>
       <main class="content ${isChat ? "content--chat" : ""}">
         ${
