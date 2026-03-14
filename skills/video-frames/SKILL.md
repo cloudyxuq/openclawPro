@@ -1,12 +1,12 @@
 ---
-name: 视频帧提取
-description: 使用ffmpeg从视频中提取帧或短视频片段。
+name: video-frames
+description: Extract frames or short clips from videos using ffmpeg.
 homepage: https://ffmpeg.org
 metadata:
   {
     "openclaw":
       {
-        "emoji": "🎞️",
+        "emoji": "🎬",
         "requires": { "bins": ["ffmpeg"] },
         "install":
           [

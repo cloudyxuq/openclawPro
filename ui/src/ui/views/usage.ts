@@ -439,11 +439,7 @@ export function renderUsage(props: UsageProps) {
   return html`
     <style>${usageStylesString}</style>
 
-    <section class="usage-page-header">
-      <div class="usage-page-title">使用情况</div>
-      <div class="usage-page-subtitle">查看tokens流向、会话高峰和成本驱动因素。</div>
-    </section>
-
+   
     <section class="card usage-header ${props.headerPinned ? "pinned" : ""}">
       <div class="usage-header-row">
         <div class="usage-header-title">

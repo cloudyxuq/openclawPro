@@ -530,13 +530,13 @@ function renderUsageInsights(
         </div>
       </div>
       <div class="usage-insights-grid">
-        ${renderInsightList("Top模型", topModels, "无模型数据")}
-        ${renderInsightList("Top供应商", topProviders, "无供应商数据")}
-        ${renderInsightList("Top工具", topTools, "无工具调用")}
-        ${renderInsightList("Top智能体", topAgents, "无智能体数据")}
-        ${renderInsightList("Top渠道", topChannels, "无渠道数据")}
-        ${renderPeakErrorList("Top高峰日", errorDays, "无错误数据")}
-        ${renderPeakErrorList("Top高峰小时", errorHours, "无错误数据")}
+        ${renderInsightList("Top Models", topModels, "No model data")}
+        ${renderInsightList("Top Providers", topProviders, "No provider data")}
+        ${renderInsightList("Top Tools", topTools, "No tool calls")}
+        ${renderInsightList("Top Agents", topAgents, "No agent data")}
+        ${renderInsightList("Top Channels", topChannels, "No channel data")}
+        ${renderPeakErrorList("Peak Error Days", errorDays, "No error data")}
+        ${renderPeakErrorList("Peak Error Hours", errorHours, "No error data")}
       </div>
     </section>
   `;

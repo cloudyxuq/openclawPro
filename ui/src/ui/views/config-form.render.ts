@@ -13,6 +13,9 @@ export type ConfigFormProps = {
   searchQuery?: string;
   activeSection?: string | null;
   activeSubsection?: string | null;
+  revealSensitive?: boolean;
+  isSensitivePathRevealed?: (path: Array<string | number>) => boolean;
+  onToggleSensitivePath?: (path: Array<string | number>) => void;
   onPatch: (path: Array<string | number>, value: unknown) => void;
 };
 
@@ -239,39 +242,39 @@ const sectionIcons = {
 // Section metadata
 export const SECTION_META: Record<string, { label: string; description: string }> = {
   env: {
-    label: "环境变量",
-    description: "传递给网关进程的环境变量",
+    label: "Environment Variables",
+    description: "Environment variables passed to the gateway process",
   },
-  update: { label: "更新", description: "自动更新设置和发布频道" },
-  agents: { label: "智能体", description: "智能体配置、模型和身份" },
-  auth: { label: "认证", description: "API 密钥和认证配置" },
+  update: { label: "Updates", description: "Auto-update settings and release channel" },
+  agents: { label: "Agents", description: "Agent configurations, models, and identities" },
+  auth: { label: "Authentication", description: "API keys and authentication profiles" },
   channels: {
-    label: "频道",
-    description: "消息频道（Telegram、Discord、Slack 等）",
+    label: "Channels",
+    description: "Messaging channels (Telegram, Discord, Slack, etc.)",
   },
-  messages: { label: "消息", description: "消息处理和路由设置" },
-  commands: { label: "命令", description: "自定义斜杠命令" },
-  hooks: { label: "钩子", description: "Webhooks 和事件钩子" },
-  skills: { label: "技能", description: "技能包和能力" },
-  tools: { label: "工具", description: "工具配置（浏览器、搜索等）" },
-  gateway: { label: "网关", description: "网关服务器设置（端口、认证、绑定）" },
-  wizard: { label: "设置向导", description: "设置向导状态和历史记录" },
+  messages: { label: "Messages", description: "Message handling and routing settings" },
+  commands: { label: "Commands", description: "Custom slash commands" },
+  hooks: { label: "Hooks", description: "Webhooks and event hooks" },
+  skills: { label: "Skills", description: "Skill packs and capabilities" },
+  tools: { label: "Tools", description: "Tool configurations (browser, search, etc.)" },
+  gateway: { label: "Gateway", description: "Gateway server settings (port, auth, binding)" },
+  wizard: { label: "Setup Wizard", description: "Setup wizard state and history" },
   // Additional sections
-  meta: { label: "元数据", description: "网关元数据和版本信息" },
-  logging: { label: "日志", description: "日志级别和输出配置" },
-  browser: { label: "浏览器", description: "浏览器自动化设置" },
-  ui: { label: "UI", description: "用户界面偏好" },
-  models: { label: "模型", description: "AI 模型配置和提供程序" },
-  bindings: { label: "绑定", description: "按键绑定和快捷键" },
-  broadcast: { label: "广播", description: "广播和通知设置" },
-  audio: { label: "音频", description: "音频输入/输出设置" },
-  session: { label: "会话", description: "会话管理和持久性" },
-  cron: { label: "计划任务", description: "计划任务和自动化" },
-  web: { label: "Web", description: "Web 服务器和 API 设置" },
-  discovery: { label: "发现", description: "服务发现和网络" },
-  canvasHost: { label: "Canvas Host", description: "Canvas 渲染和显示" },
-  talk: { label: "语音", description: "语音和语音设置" },
-  plugins: { label: "插件", description: "插件管理和扩展" },
+  meta: { label: "Metadata", description: "Gateway metadata and version information" },
+  logging: { label: "Logging", description: "Log levels and output configuration" },
+  browser: { label: "Browser", description: "Browser automation settings" },
+  ui: { label: "UI", description: "User interface preferences" },
+  models: { label: "Models", description: "AI model configurations and providers" },
+  bindings: { label: "Bindings", description: "Key bindings and shortcuts" },
+  broadcast: { label: "Broadcast", description: "Broadcast and notification settings" },
+  audio: { label: "Audio", description: "Audio input/output settings" },
+  session: { label: "Session", description: "Session management and persistence" },
+  cron: { label: "Cron", description: "Scheduled tasks and automation" },
+  web: { label: "Web", description: "Web server and API settings" },
+  discovery: { label: "Discovery", description: "Service discovery and networking" },
+  canvasHost: { label: "Canvas Host", description: "Canvas rendering and display" },
+  talk: { label: "Talk", description: "Voice and speech settings" },
+  plugins: { label: "Plugins", description: "Plugin management and extensions" },
 };
 
 function getSectionIcon(key: string) {
@@ -291,20 +294,14 @@ function matchesSearch(params: {
   const criteria = parseConfigSearchQuery(params.query);
   const q = criteria.text;
   const meta = SECTION_META[params.key];
+  const sectionMetaMatches =
+    q &&
+    (params.key.toLowerCase().includes(q) ||
+      (meta?.label ? meta.label.toLowerCase().includes(q) : false) ||
+      (meta?.description ? meta.description.toLowerCase().includes(q) : false));
 
-  // Check key name
-  if (q && params.key.toLowerCase().includes(q)) {
+  if (sectionMetaMatches && criteria.tags.length === 0) {
     return true;
-  }
-
-  // Check label and description
-  if (q && meta) {
-    if (meta.label.toLowerCase().includes(q)) {
-      return true;
-    }
-    if (meta.description.toLowerCase().includes(q)) {
-      return true;
-    }
   }
 
   return matchesNodeSearch({
@@ -431,6 +428,9 @@ export function renderConfigForm(props: ConfigFormProps) {
                     disabled: props.disabled ?? false,
                     showLabel: false,
                     searchCriteria,
+                    revealSensitive: props.revealSensitive ?? false,
+                    isSensitivePathRevealed: props.isSensitivePathRevealed,
+                    onToggleSensitivePath: props.onToggleSensitivePath,
                     onPatch: props.onPatch,
                   })}
                 </div>
@@ -466,6 +466,9 @@ export function renderConfigForm(props: ConfigFormProps) {
                     disabled: props.disabled ?? false,
                     showLabel: false,
                     searchCriteria,
+                    revealSensitive: props.revealSensitive ?? false,
+                    isSensitivePathRevealed: props.isSensitivePathRevealed,
+                    onToggleSensitivePath: props.onToggleSensitivePath,
                     onPatch: props.onPatch,
                   })}
                 </div>

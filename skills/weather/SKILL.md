@@ -1,8 +1,8 @@
 ---
-name: 天气查询
-description: 获取当前天气和预报（无需API密钥）。
+name: weather
+description: "Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed."
 homepage: https://wttr.in/:help
-metadata: { "openclaw": { "emoji": "🌤️", "requires": { "bins": ["curl"] } } }
+metadata: { "openclaw": { "emoji": "☔", "requires": { "bins": ["curl"] } } }
 ---
 
 # Weather Skill

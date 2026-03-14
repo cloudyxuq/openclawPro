@@ -10,6 +10,7 @@ import {
 } from "./skills-shared.ts";
 
 export type SkillsProps = {
+  connected: boolean;
   loading: boolean;
   report: SkillStatusReport | null;
   error: string | null;
@@ -42,20 +43,26 @@ export function renderSkills(props: SkillsProps) {
           <div class="card-title">技能</div>
           <div class="card-sub">内置、管理和工作区技能。</div>
         </div>
-        <button class="btn" ?disabled=${props.loading} @click=${props.onRefresh}>
-          ${props.loading ? "加载中…" : "刷新"}
-
+        <button class="btn" ?disabled=${props.loading || !props.connected} @click=${props.onRefresh}>
+         ${props.loading ? "加载中…" : "刷新"}
         </button>
       </div>
 
-      <div class="filters" style="margin-top: 14px;">
-        <label class="field" style="flex: 1;">
-          <span>过滤</span>
-
+      <div class="filters" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px;">
+        <a
+          class="btn"
+          href="https://clawhub.com"
+          target="_blank"
+          rel="noreferrer"
+          title="Browse skills on ClawHub"
+        >Browse Skills Store</a>
+        <label class="field" style="flex: 1; min-width: 180px;">
           <input
             .value=${props.filter}
             @input=${(e: Event) => props.onFilterChange((e.target as HTMLInputElement).value)}
             placeholder="搜索技能"
+            autocomplete="off"
+            name="skills-filter"
           />
         </label>
         <div class="muted">显示 ${filtered.length} 个</div>
@@ -71,7 +78,13 @@ export function renderSkills(props: SkillsProps) {
       ${
         filtered.length === 0
           ? html`
-              <div class="muted" style="margin-top: 16px">未找到技能。</div>
+              <div class="muted" style="margin-top: 16px">
+                ${
+                  !props.connected && !props.report
+                    ? "Not connected to gateway."
+                    : "No skills found."
+                }
+              </div>
             `
           : html`
             <div class="agent-skills-groups" style="margin-top: 16px;">

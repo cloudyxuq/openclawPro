@@ -9,6 +9,7 @@ export type DebugProps = {
   models: unknown[];
   heartbeat: unknown;
   eventLog: EventLogEntry[];
+  methods: string[];
   callMethod: string;
   callParams: string;
   callResult: string | null;
@@ -33,7 +34,7 @@ export function renderDebug(props: DebugProps) {
     critical > 0 ? `${critical} critical` : warn > 0 ? `${warn} warnings` : "No critical issues";
 
   return html`
-    <section class="grid grid-cols-2">
+    <section class="grid">
       <div class="card">
         <div class="row" style="justify-content: space-between;">
           <div>
@@ -74,11 +75,19 @@ export function renderDebug(props: DebugProps) {
         <div class="form-grid" style="margin-top: 16px;">
           <label class="field">
             <span>方法</span>
-            <input
+            <select
               .value=${props.callMethod}
-              @input=${(e: Event) => props.onCallMethodChange((e.target as HTMLInputElement).value)}
-              placeholder="system-presence"
-            />
+              @change=${(e: Event) => props.onCallMethodChange((e.target as HTMLSelectElement).value)}
+            >
+              ${
+                !props.callMethod
+                  ? html`
+                      <option value="" disabled>Select a method…</option>
+                    `
+                  : nothing
+              }
+              ${props.methods.map((m) => html`<option value=${m}>${m}</option>`)}
+            </select>
           </label>
           <label class="field">
             <span>参数 (JSON)</span>
