@@ -6,6 +6,23 @@ Docs: https://docs.openclaw.ai
 
 ## 2026.3.13
 
+## Single 自定义
+
+feat: 添加批量操作支持、扩展插件文档及多项功能改进
+
+- 在浏览器工具中增加 `batch` 操作类型，支持批量执行任务
+- 为 vLLM、Ollama 和 SGLang 扩展添加 provider 插件和 README 文档
+- 改进 LINE 通道配置，要求 tokenFile 和 secretFile 必须是常规文件（拒绝符号链接）
+- 在 Docker 构建上下文中排除敏感文件（如 .env）
+- 更新多个技能（SKILL.md）的元数据，包括表情符号和描述
+- 扩展插件 SDK，增加 WhatsApp、Telegram、Slack 等通道的辅助函数
+- 改进 ACP 运行时，支持会话恢复（resumeSessionId）
+- 为 UI 聊天功能添加 Markdown 导出、附件支持和搜索匹配功能
+- 更新 iOS 项目配置，支持动态版本管理
+- 添加 Kubernetes 部署清单（kustomization、PVC、Service）
+- 修复并改进错误处理、网络超时和安全性策略
+- 更新依赖版本（Node 24 推荐，acpx 0.3.0 等）
+
 ### Changes
 
 - Android/chat settings: redesign the chat settings sheet with grouped device and media sections, refresh the Connect and Voice tabs, and tighten the chat composer/session header for a denser mobile layout. (#44894) Thanks @obviyus.
