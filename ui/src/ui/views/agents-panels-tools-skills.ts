@@ -434,6 +434,8 @@ export function renderAgentSkills(params: {
             .value=${params.filter}
             @input=${(e: Event) => params.onFilterChange((e.target as HTMLInputElement).value)}
             placeholder="搜索技能"
+            autocomplete="off"
+            name="agent-skills-filter"
           />
         </label>
         <div class="muted">${filtered.length} 个技能显示</div>
