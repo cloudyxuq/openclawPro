@@ -135,7 +135,7 @@ export function renderAgents(props: AgentsProps) {
     <div class="agents-layout">
       <section class="agents-toolbar">
         <div class="agents-toolbar-row">
-          <span class="agents-toolbar-label">Agent</span>
+          <span class="agents-toolbar-label">智能体</span>
           <div class="agents-control-row">
             <div class="agents-control-select">
               <select
@@ -147,7 +147,7 @@ export function renderAgents(props: AgentsProps) {
                 ${
                   agents.length === 0
                     ? html`
-                        <option value="">No agents</option>
+                        <option value="">无智能体</option>
                       `
                     : agents.map(
                         (agent) => html`
@@ -178,7 +178,7 @@ export function renderAgents(props: AgentsProps) {
                                   <button type="button" @click=${() => {
                                     void navigator.clipboard.writeText(selectedAgent.id);
                                     actionsMenuOpen = false;
-                                  }}>Copy agent ID</button>
+                                  }}>复制智能体ID</button>
                                   <button
                                     type="button"
                                     ?disabled=${Boolean(defaultId && selectedAgent.id === defaultId)}
@@ -187,7 +187,7 @@ export function renderAgents(props: AgentsProps) {
                                       actionsMenuOpen = false;
                                     }}
                                   >
-                                    ${defaultId && selectedAgent.id === defaultId ? "Already default" : "Set as default"}
+                                    ${defaultId && selectedAgent.id === defaultId ? "已设置为默认" : "设置为默认"}
                                   </button>
                                 </div>
                               `
@@ -198,7 +198,7 @@ export function renderAgents(props: AgentsProps) {
                   : nothing
               }
               <button class="btn btn--sm agents-refresh-btn" ?disabled=${props.loading} @click=${props.onRefresh}>
-                ${props.loading ? "Loading…" : "Refresh"}
+                ${props.loading ? "加载中..." : "刷新"}
               </button>
             </div>
           </div>

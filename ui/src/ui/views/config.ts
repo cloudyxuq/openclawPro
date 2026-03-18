@@ -752,13 +752,13 @@ export function renderConfig(props: ConfigProps) {
 	                  <span class="config-changes-badge"
 	                    >${
                         formMode === "raw"
-                          ? "Unsaved changes"
-                          : `${diff.length} unsaved change${diff.length !== 1 ? "s" : ""}`
+                          ? "未保存的更改"
+                          : `${diff.length} 个未保存的更改${diff.length !== 1 ? "s" : ""}`
                       }</span
 	                  >
 	                `
                 : html`
-                    <span class="config-status muted">No changes</span>
+                    <span class="config-status muted">无更改</span>
                   `
             }
           </div>
@@ -768,10 +768,10 @@ export function renderConfig(props: ConfigProps) {
                 ? html`
                     <button
                       class="btn btn--sm"
-                      title=${props.configPath ? `Open ${props.configPath}` : "Open config file"}
+                      title=${props.configPath ? `打开 ${props.configPath}` : "打开配置文件"}
                       @click=${props.onOpenFile}
                     >
-                      ${icons.fileText} Open
+                      ${icons.fileText} 打开
                     </button>
                   `
                 : nothing
@@ -781,28 +781,28 @@ export function renderConfig(props: ConfigProps) {
               ?disabled=${props.loading}
               @click=${props.onReload}
             >
-              ${props.loading ? "Loading…" : "Reload"}
+              ${props.loading ? "加载中..." : "重新加载"}
             </button>
             <button
               class="btn btn--sm primary"
               ?disabled=${!canSave}
               @click=${props.onSave}
             >
-              ${props.saving ? "Saving…" : "Save"}
+              ${props.saving ? "保存中..." : "保存"}
             </button>
             <button
               class="btn btn--sm"
               ?disabled=${!canApply}
               @click=${props.onApply}
             >
-              ${props.applying ? "Applying…" : "Apply"}
+              ${props.applying ? "应用中..." : "应用"}
             </button>
             <button
               class="btn btn--sm"
               ?disabled=${!canUpdate}
               @click=${props.onUpdate}
             >
-              ${props.updating ? "Updating…" : "Update"}
+              ${props.updating ? "更新中..." : "更新"}
             </button>
           </div>
         </div>
@@ -826,7 +826,7 @@ export function renderConfig(props: ConfigProps) {
                       <input
                         type="text"
                         class="config-search__input"
-                        placeholder="Search settings..."
+                        placeholder="搜索设置..."
                         .value=${props.searchQuery}
                         @input=${(e: Event) =>
                           props.onSearchChange((e.target as HTMLInputElement).value)}
@@ -873,10 +873,10 @@ export function renderConfig(props: ConfigProps) {
                       <button
                         class="config-mode-toggle__btn ${formMode === "form" ? "active" : ""}"
                         ?disabled=${props.schemaLoading || !props.schema}
-                        title=${formUnsafe ? "Form view can't safely edit some fields" : ""}
+                        title=${formUnsafe ? "表单视图无法安全编辑某些字段" : ""}
                         @click=${() => props.onFormModeChange("form")}
                       >
-                        Form
+                        表单
                       </button>
                       <button
                         class="config-mode-toggle__btn ${formMode === "raw" ? "active" : ""}"
@@ -907,7 +907,7 @@ export function renderConfig(props: ConfigProps) {
                     cvs.validityDismissed = true;
                     props.onRawChange(props.raw);
                   }}
-                >Don't remind again</button>
+                >不再提醒</button>
               </div>
             `
             : nothing
@@ -920,7 +920,7 @@ export function renderConfig(props: ConfigProps) {
               <details class="config-diff">
                 <summary class="config-diff__summary">
                   <span
-                    >View ${diff.length} pending
+                    >查看 ${diff.length} 个待处理
                     change${diff.length !== 1 ? "s" : ""}</span
                   >
                   <svg
@@ -979,7 +979,7 @@ export function renderConfig(props: ConfigProps) {
                     ? html`
                       <button
                         class="config-env-peek-btn ${envSensitiveVisible ? "config-env-peek-btn--active" : ""}"
-                        title=${envSensitiveVisible ? "Hide env values" : "Reveal env values"}
+                        title=${envSensitiveVisible ? "隐藏环境变量值" : "显示环境变量值"}
                         @click=${() => {
                           cvs.envRevealed = !cvs.envRevealed;
                           props.onRawChange(props.raw);
@@ -1013,7 +1013,7 @@ export function renderConfig(props: ConfigProps) {
                     ? html`
                         <div class="config-loading">
                           <div class="config-loading__spinner"></div>
-                          <span>Loading schema…</span>
+                          <span>加载配置架构...</span>
                         </div>
                       `
                     : renderConfigForm({
@@ -1048,8 +1048,7 @@ export function renderConfig(props: ConfigProps) {
                       formUnsafe
                         ? html`
                             <div class="callout info" style="margin-bottom: 12px">
-                              Your config contains fields the form editor can't safely represent. Use Raw mode to edit those
-                              entries.
+                              您的配置包含表单编辑器无法安全表示的字段。请使用原始模式编辑这些条目。
                             </div>
                           `
                         : nothing
@@ -1060,14 +1059,12 @@ export function renderConfig(props: ConfigProps) {
                         ${
                           sensitiveCount > 0
                             ? html`
-                              <span class="pill pill--sm">${sensitiveCount} secret${sensitiveCount === 1 ? "" : "s"} ${blurred ? "redacted" : "visible"}</span>
+                              <span class="pill pill--sm">${sensitiveCount} 个敏感值 ${blurred ? "已隐藏" : "已显示"}</span>
                               <button
                                 class="btn btn--icon ${blurred ? "" : "active"}"
                                 style="width:28px;height:28px;padding:0;"
-                                title=${
-                                  blurred ? "Reveal sensitive values" : "Hide sensitive values"
-                                }
-                                aria-label="Toggle raw config redaction"
+                                title=${blurred ? "显示敏感值" : "隐藏敏感值"}
+                                aria-label="切换原始配置.redaction"
                                 aria-pressed=${!blurred}
                                 @click=${() => {
                                   cvs.rawRevealed = !cvs.rawRevealed;
@@ -1082,7 +1079,7 @@ export function renderConfig(props: ConfigProps) {
                       </span>
                       <textarea
                         class="${blurred ? "config-raw-redacted" : ""}"
-                        placeholder=${blurred ? REDACTED_PLACEHOLDER : "Raw JSON5 config"}
+                        placeholder=${blurred ? REDACTED_PLACEHOLDER : "Raw JSON5 配置"}
                         .value=${blurred ? "" : props.raw}
                         ?readonly=${blurred}
                         @input=${(e: Event) => {
